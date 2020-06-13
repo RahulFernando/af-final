@@ -59,7 +59,7 @@ export default class Login extends Component {
                         <img src={User} id="icon" alt="User Icon" />
                     </div>
 
-                    <form onSubmit={this.handleSubmit}>
+                    <form className="login" onSubmit={this.handleSubmit}>
                         <div class="form-group" style={{padding: 10}}>
                             <input type="text"  class="form-control" name="username" id="username" placeholder="Enter username" onChange={this.handleOnChange}/>
                         </div>
