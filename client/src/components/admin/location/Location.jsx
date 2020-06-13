@@ -64,16 +64,47 @@ export default class Location extends Component {
         if (this.state.name === '' && this.state.description === '' && this.state.file === null) {
             alert('Fields cannot be empty !')
         } else {
-            const data = new FormData();
+            if (!this.state.edit) {
+                const data = new FormData();
 
-            data.append('file', this.state.file)
-            data.append('name', this.state.name)
-            data.append('description', this.state.description)
+                data.append('file', this.state.file)
+                data.append('name', this.state.name)
+                data.append('description', this.state.description)
 
-            axios.post('/location', data).then(res => {
-                alert('Uploaded !')
-            })
+                axios.post('/location', data).then(res => {
+                    alert('Uploaded !')
+                    axios.get('/locations').then(res => {
+                        this.setState({
+                            locations: res.data
+                        })
+                    })
+                })
+            } else {
+                const location = {
+                    name: this.state.name,
+                    description: this.state.description
+                }
+
+                axios.put('/location/' + this.state.id, location).then(res => {
+                    alert(res.data.message)
+                    axios.get('/locations').then(res => {
+                        this.setState({
+                            locations: res.data
+                        })
+                    })
+                })
+            }
         }
+
+        this.setState({
+            id: '',
+            name: '',
+            description: '',
+            file: null,
+            img: null,
+            simg: null,
+            edit: false
+        })
     }
 
     // edit
@@ -88,12 +119,27 @@ export default class Location extends Component {
         })
     }
 
+    // delete
+    handleDelete = (_id) => {
+        if (window.confirm("Do you need to remove this location?")) {
+            axios.delete('/location/' + _id).then(resp => {
+                alert(resp.data.message)
+                axios.get('/locations').then(res => {
+                    this.setState({
+                        locations: res.data
+                    })
+                })
+            
+            });
+        }
+    }
+
     render() {
         return (
             <div>
                 <SideNav/>
                 <LocationInput handleFileChange={this.handleFileChange} handleOnChange={this.handleOnChange} handleSubmit={this.handleSubmit} img={this.state.img} simg={this.state.simg} name={this.state.name} description={this.state.description} edit={this.state.edit}/>
-                <LocationList locations={this.state.locations} handleEdit={this.handleEdit}/>
+                <LocationList locations={this.state.locations} handleEdit={this.handleEdit} handleDelete={this.handleDelete}/>
             </div>
         )
     }

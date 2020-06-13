@@ -6,7 +6,7 @@ import LocationItem from './LocationItem'
 export default class LocationList extends Component {
     render() {
         // destructuring
-        const { locations, handleEdit } = this.props;
+        const { locations, handleEdit, handleDelete } = this.props;
 
         return (
           <div className="container">
@@ -15,7 +15,7 @@ export default class LocationList extends Component {
                 {/*iterate through items*/}
                 {locations.reverse().map(location => {
                     return(
-                        <LocationItem key={location._id} name={location.name} file={location.file} description={location.description}  handleEdit={() => handleEdit(location._id)}/>
+                        <LocationItem key={location._id} name={location.name} file={location.file} description={location.description}  handleEdit={() => handleEdit(location._id)} handleDelete={() => handleDelete(location._id)}/>
                     )
                 })}
             </ul>
