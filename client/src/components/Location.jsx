@@ -22,7 +22,8 @@ export default class Location extends Component {
             this.setState({
                 name: res.data.name,
                 description: res.data.description,
-                image: res.data.image.data.data
+                image: res.data.image.data.data,
+                hotel: res.data.hotel.name
             })
         })
     }
@@ -46,7 +47,9 @@ export default class Location extends Component {
                         <img class="card-img-top" src={this.arrayBufferToBase64(this.state.image)} alt="Card image cap"/>
                         <div class="card-body">
                         <h5 class="card-title">{this.state.name}</h5>
-                            {this.state.description}
+                            {this.state.description} <br/> <br/>
+                        <h6>Hotel Near</h6>
+                            {this.state.hotel}
                         </div>
                     </div>
                 </div>

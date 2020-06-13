@@ -8,7 +8,8 @@ export default class SideNav extends Component {
         return (
             <div class="sidenav">
                 <Link to={"/dashboard"}><i class="fas fa-home"></i>&nbsp; Home</Link>
-                <Link to={"/location"}><i class="fas fa-plus"></i> &nbsp; New</Link>
+                <Link to={"/location"}><i class="fas fa-plus"></i> &nbsp;Location</Link>
+                <Link to={"/hotel"}><i class="fas fa-plus"></i> &nbsp;Hotel</Link>
             </div>
         )
     }

@@ -8,6 +8,7 @@ const fs = require('fs');
 // models
 const Admin = require('../model/admin');
 const Location = require('../model/location')
+const Hotel = require('../model/hotel')
 
 // routes
 router.get('/', (req, res) => {
@@ -105,11 +106,11 @@ router.post('/location', async (req, res) => {
         await upload(req, res, err => {
             if (err) return res.json({success: false, err})
             const location = new Location()
-            console.log(req.file.path)
             location.image.data = fs.readFileSync(req.file.path)
             location.image.contentType = "image/png"
             location.name = req.body.name
             location.description = req.body.description
+            location.hotel = req.body.hotel
 
             Location.newLocation(location, err => {
                 if(err) { console.log(err) }
@@ -126,15 +127,20 @@ router.get('/locations', (req, res) => {
     Location.getAllLocations((err, locations) => {
         if(!err) {
             return res.send(locations)
+        } else {
+            console.log(err)
         }
     })
 })
 
 router.get('/location/:id', async(req,res) => {
+    console.log("hello")
     try {
         await Location.getLocationById(req.params.id, (err, location) => {
             if (!err) {
                 return res.send(location)
+            } else {
+                console.log(err)
             }
         })
     } catch (error) {
@@ -160,6 +166,41 @@ router.delete('/location/:id', (req, res) => {
     Location.deleteLocation(req.params.id, err => {
         if (!err) {
             return res.json({message: 'Deleted!'})
+        }
+    })
+})
+
+router.post('/search', (req, res) => {
+    console.log(req.body.name)
+    Location.getLocationByName(req.body.name, (err, location) => {
+        if (!err) {
+            return res.send(location)
+        }
+    })
+})
+
+router.post('/hotel', (req, res) => {
+    const hotel = new Hotel()
+    hotel.name = req.body.name
+    Hotel.newHotel(hotel, (err) => {
+        if (!err) {
+            return res.json({message: 'Uploaded!'})
+        }
+    })
+})
+
+router.get('/hotel', (req, res) => {
+    Hotel.allHotels((err, hotels) => {
+        if (!err) {
+            return res.send(hotels)
+        }
+    })
+})
+
+router.delete('/hotel/:id', (req, res) => {
+    Hotel.deleteHotel(req.params.id, err => {
+        if (!err) {
+            return res.json({message: "Deleted!"})
         }
     })
 })

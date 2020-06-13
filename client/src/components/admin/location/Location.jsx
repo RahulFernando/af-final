@@ -18,6 +18,8 @@ export default class Location extends Component {
              img: null,
              simg: null,
              locations: [],
+             hotels: [],
+             hotel: '',
              edit: false
         }
 
@@ -31,6 +33,11 @@ export default class Location extends Component {
         axios.get('/locations').then(res => {
             this.setState({
                 locations: res.data
+            })
+        })
+        axios.get('/hotel').then(res => {
+            this.setState({
+                hotels: res.data
             })
         })
     }
@@ -70,6 +77,9 @@ export default class Location extends Component {
                 data.append('file', this.state.file)
                 data.append('name', this.state.name)
                 data.append('description', this.state.description)
+                data.append('hotel', this.state.hotel)
+
+                console.log(this.state.hotel)
 
                 axios.post('/location', data).then(res => {
                     alert('Uploaded !')
@@ -138,7 +148,7 @@ export default class Location extends Component {
         return (
             <div>
                 <SideNav/>
-                <LocationInput handleFileChange={this.handleFileChange} handleOnChange={this.handleOnChange} handleSubmit={this.handleSubmit} img={this.state.img} simg={this.state.simg} name={this.state.name} description={this.state.description} edit={this.state.edit}/>
+                <LocationInput handleFileChange={this.handleFileChange} handleOnChange={this.handleOnChange} handleSubmit={this.handleSubmit} img={this.state.img} simg={this.state.simg} name={this.state.name} description={this.state.description} hotels={this.state.hotels} edit={this.state.edit}/>
                 <LocationList locations={this.state.locations} handleEdit={this.handleEdit} handleDelete={this.handleDelete}/>
             </div>
         )
