@@ -19,7 +19,7 @@ function App() {
         <Route exact path="/" component={Home}/>
         <Route exact path="/displayLocation/:id" component={Location}/>
         <Route exact path="/admin" component={Login}/>
-        <Route exact path="/dashboard" component={Dashboard}/>
+        <Protected exact path="/dashboard" component={Dashboard}/>
         <Route exact path="/location" component={NewLocation}/>
     </Router>
 

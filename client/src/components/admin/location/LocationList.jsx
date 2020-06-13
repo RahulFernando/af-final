@@ -11,7 +11,7 @@ export default class LocationList extends Component {
         return (
           <div className="container">
                 <ul className="list-group my-5">
-                <h3 className="text-capitalize text-center">todo list</h3>
+                <h3 className="text-capitalize text-center">List</h3>
                 {/*iterate through items*/}
                 {locations.reverse().map(location => {
                     return(

@@ -7,6 +7,9 @@ import User from './img/user.svg'
 // custom style
 import './style.css'
 
+// service
+import {loginAdmin, isAuthenticated} from '../../auth/func'
+
 export default class Login extends Component {
     constructor(props) {
         super(props)
@@ -39,11 +42,13 @@ export default class Login extends Component {
             password: this.state.password
         }
 
-        axios.post('/login', admin).then(res => {
-            if (res.data.token) {
+        loginAdmin(admin).then(res => {
+            const auth = isAuthenticated();
+            if (auth) {
                 this.props.history.push('/dashboard');
             }
         })
+
     }
 
     render() {
@@ -55,9 +60,15 @@ export default class Login extends Component {
                     </div>
 
                     <form onSubmit={this.handleSubmit}>
-                        <input type="text"  class="fadeIn first login" name="username" id="username" placeholder="Enter username" onChange={this.handleOnChange}/>
-                        <input type="password" class="fadeIn second login" name="password" id="password" placeholder="Enter password" onChange={this.handleOnChange}/>
-                        <input type="submit" class="fadeIn third" value="Log In"/>
+                        <div class="form-group" style={{padding: 10}}>
+                            <input type="text"  class="form-control" name="username" id="username" placeholder="Enter username" onChange={this.handleOnChange}/>
+                        </div>
+                        <div class="form-group" style={{padding: 10}}>
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" onChange={this.handleOnChange}/>
+                        </div>
+                        <div style={{paddingBottom: 10}}>
+                            <input type="submit" class="btn btn-primary" value="Log In"/>
+                        </div>
                     </form>
                 </div>
             </div>
