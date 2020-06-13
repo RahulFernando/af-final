@@ -1,10 +1,13 @@
 // modules
-const express = require('express')
-const router = express.Router()
-const jwt = require('jsonwebtoken')
+const express = require('express');
+const router = express.Router();
+const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const fs = require('fs');
 
-// admin model
-const Admin = require('../model/admin')
+// models
+const Admin = require('../model/admin');
+const Location = require('../model/location')
 
 // routes
 router.get('/', (req, res) => {
@@ -17,7 +20,7 @@ router.post('/register', (req, res) => {
         username: req.body.username,
         password: req.body.password
     })
-    Admin.newAdmin(admin, (err, admin) => {
+    Admin.newAdmin(admin, (err, admin) => { // declared in admin model
         if (err) {
             let message = "";
             if (err.errors.username) message = "Username is already taken ";
@@ -39,7 +42,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    Admin.getAdminByUsername(username, (err, admin) => {
+    Admin.getAdminByUsername(username, (err, admin) => { // declared in admin model
         if (err) throw err;
         if (!admin) {
             return res.json({
@@ -48,7 +51,7 @@ router.post('/login', (req, res) => {
             })
         }
  
-        Admin.comparePassword(password, admin.password, (err, isMatch) => {
+        Admin.comparePassword(password, admin.password, (err, isMatch) => { // declared in admin model
             if (err) throw err;
             if (isMatch) {
                  const token = jwt.sign({
@@ -76,5 +79,81 @@ router.post('/login', (req, res) => {
         })
     })
 });
+
+// saving images to local
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/')
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}_${file.originalname}`)
+    },
+    fileFilter: (req, file, cb) => {
+        const ext = path.extname(file.originalname)
+        if (ext !== '.jpg' || ext !== '.png') {
+            return cb(res.status(400).end('only jpg, png are allowed'), false);
+        }
+        cb(null, true)
+    }
+})
+
+var upload = multer({storage: storage}).single("file")
+
+// adding places 
+router.post('/location', async (req, res) => {
+    try {
+        await upload(req, res, err => {
+            if (err) return res.json({success: false, err})
+            const location = new Location()
+            console.log(req.file.path)
+            location.image.data = fs.readFileSync(req.file.path)
+            location.image.contentType = "image/png"
+            location.name = req.body.name
+            location.description = req.body.description
+
+            Location.newLocation(location, err => {
+                if(err) { console.log(err) }
+                return res.status(200).json({success: true})
+            })
+        })
+    } catch (error) {
+        
+    }
+})
+
+// get locations 
+router.get('/locations', async (req, res) => {
+    try {
+        await Location.getAllLocations((err, locations) => {
+            if(!err) {
+                return res.send(locations)
+            }
+        })
+    } catch (error) {
+        
+    }
+})
+
+// update locations
+router.put('/location/:id', async (req, res) => {
+    try {
+        const location = {name: req.body.name, description: req.body.description}
+        Location.updateLocation(req.params.id, location, (err) => {
+            if(!err) {
+                res.json(({message: 'Updated'}))
+            }
+        })
+    } catch (error) {
+        
+    }
+})
+
+router.delete('/location/:id', (req, res) => {
+    Location.deleteLocation(req.params.id, err => {
+        if (!err) {
+            return res.json({message: 'Deleted!'})
+        }
+    })
+})
 
 module.exports = router;
