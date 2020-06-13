@@ -19,7 +19,7 @@ export default class Location extends Component {
              simg: null,
              locations: [],
              hotels: [],
-             hotel: '',
+             hotel_id: '',
              edit: false
         }
 
@@ -77,7 +77,7 @@ export default class Location extends Component {
                 data.append('file', this.state.file)
                 data.append('name', this.state.name)
                 data.append('description', this.state.description)
-                data.append('hotel', this.state.hotel)
+                data.append('hotel', this.state.hotel_id)
 
                 console.log(this.state.hotel)
 
@@ -90,9 +90,11 @@ export default class Location extends Component {
                     })
                 })
             } else {
+                console.log(this.state.hotel_id)
                 const location = {
                     name: this.state.name,
-                    description: this.state.description
+                    description: this.state.description,
+                    hotel: this.state.hotel_id
                 }
 
                 axios.put('/location/' + this.state.id, location).then(res => {
@@ -113,6 +115,8 @@ export default class Location extends Component {
             file: null,
             img: null,
             simg: null,
+            hotel: 'null',
+            hotel_id: '',
             edit: false
         })
     }
@@ -125,6 +129,8 @@ export default class Location extends Component {
             name: selectedLocation[0].name,
             description: selectedLocation[0].description,
             simg: selectedLocation[0].image.data.data,
+            hotel: selectedLocation[0].hotel.name,
+            hotel_id: selectedLocation[0].hotel._id,
             edit: true
         })
     }
@@ -148,7 +154,7 @@ export default class Location extends Component {
         return (
             <div>
                 <SideNav/>
-                <LocationInput handleFileChange={this.handleFileChange} handleOnChange={this.handleOnChange} handleSubmit={this.handleSubmit} img={this.state.img} simg={this.state.simg} name={this.state.name} description={this.state.description} hotels={this.state.hotels} edit={this.state.edit}/>
+                <LocationInput handleFileChange={this.handleFileChange} handleOnChange={this.handleOnChange} handleSubmit={this.handleSubmit} img={this.state.img} simg={this.state.simg} name={this.state.name} description={this.state.description} hotels={this.state.hotels} edit={this.state.edit} hotel_id={this.state.hotel_id} />
                 <LocationList locations={this.state.locations} handleEdit={this.handleEdit} handleDelete={this.handleDelete}/>
             </div>
         )

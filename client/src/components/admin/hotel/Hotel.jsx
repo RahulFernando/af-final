@@ -13,7 +13,6 @@ export default class Hote extends Component {
         this.state = {
              hotels: [],
              hotel: '',
-             id: '',
         }
 
         this.handleOnChnage = this.handleOnChnage.bind(this)
@@ -59,6 +58,9 @@ export default class Hote extends Component {
                 })
             })
         }
+        this.setState({
+            hotel: ''
+        })
     }
 
     // delete 

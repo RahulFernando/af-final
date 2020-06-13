@@ -151,7 +151,7 @@ router.get('/location/:id', async(req,res) => {
 // update locations
 router.put('/location/:id', async (req, res) => {
     try {
-        const location = {name: req.body.name, description: req.body.description}
+        const location = {name: req.body.name, description: req.body.description, hotel: req.body.hotel}
         Location.updateLocation(req.params.id, location, (err) => {
             if(!err) {
                 res.json(({message: 'Updated'}))

@@ -21,8 +21,8 @@ function App() {
         <Route exact path="/displayLocation/:id" component={Location}/>
         <Route exact path="/admin" component={Login}/>
         <Protected exact path="/dashboard" component={Dashboard}/>
-        <Route exact path="/location" component={NewLocation}/>
-        <Route exact path="/hotel" component={Hotel}/>
+        <Protected exact path="/location" component={NewLocation}/>
+        <Protected exact path="/hotel" component={Hotel}/>
     </Router>
 
   );

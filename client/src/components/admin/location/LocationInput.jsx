@@ -13,7 +13,7 @@ export default class LocationInput extends Component {
     };
 
     render() {
-        const {img, simg, name, description, hotels, edit, handleFileChange, handleOnChange, handleSubmit} = this.props
+        const {img, simg, name, description, hotels, edit, hotel_id, handleFileChange, handleOnChange, handleSubmit} = this.props
         return (
            <div className="container">
                 <div className="card">
@@ -34,11 +34,11 @@ export default class LocationInput extends Component {
                                     <input type="text" class="form-control" name="description" id="description" placeholder="Enter description" onChange={handleOnChange} value={description}/>
                                 </div>
                                 <div className="form-group">
-                                    <select class="form-control" name="hotel" onChange={handleOnChange}>
-                                        <option value="">Select</option>
+                                    <select class="form-control" name="hotel_id" value={hotel_id ? hotel_id : 'select'} onChange={handleOnChange} >
                                         {hotels.map(hotel => {
-                                            return <option value={hotel._id}>{hotel.name}</option>
+                                            return <option key={hotel._id} value={hotel._id}>{hotel.name}</option>
                                         })}
+                                        <option value="select">Select</option>
                                     </select>
                                 </div>
                                 
