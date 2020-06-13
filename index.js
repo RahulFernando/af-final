@@ -7,7 +7,7 @@ const cors = require('cors')
 // db connection
 mongoose.set('debug', true)
 mongoose.Promise = global.Promise // asynchronize handling
-mongoose.connect('url', (err) => {
+mongoose.connect('mongodb+srv://user:123@af-final-jwnye.mongodb.net/tourism?retryWrites=true&w=majority', (err) => {
     if (!err) {
         console.log('db connected...')
     } else {
