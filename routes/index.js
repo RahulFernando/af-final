@@ -122,11 +122,19 @@ router.post('/location', async (req, res) => {
 })
 
 // get locations 
-router.get('/locations', async (req, res) => {
+router.get('/locations', (req, res) => {
+    Location.getAllLocations((err, locations) => {
+        if(!err) {
+            return res.send(locations)
+        }
+    })
+})
+
+router.get('/location/:id', async(req,res) => {
     try {
-        await Location.getAllLocations((err, locations) => {
-            if(!err) {
-                return res.send(locations)
+        await Location.getLocationById(req.params.id, (err, location) => {
+            if (!err) {
+                return res.send(location)
             }
         })
     } catch (error) {

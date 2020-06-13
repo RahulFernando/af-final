@@ -29,6 +29,11 @@ module.exports.getAllLocations = function (callback) {
     Location.find(callback);
 }
 
+// get location by id
+module.exports.getLocationById = function(id, callback) {
+    Location.findById(id, callback)
+}
+
 // update location
 module.exports.updateLocation = function (id,location, callback) {
     Location.findByIdAndUpdate(id, location, callback);
