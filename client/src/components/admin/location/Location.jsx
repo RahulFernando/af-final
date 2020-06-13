@@ -68,7 +68,7 @@ export default class Location extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        if (this.state.name === '' && this.state.description === '' && this.state.file === null) {
+        if (this.state.name === '' || this.state.description === '' || this.state.file === null) {
             alert('Fields cannot be empty !')
         } else {
             if (!this.state.edit) {

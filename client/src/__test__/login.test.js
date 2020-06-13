@@ -13,3 +13,11 @@ describe('Login component', () => {
         expect(shallow(<Login/>).find('#password').length).toEqual(1)
     })
 })
+
+describe('Username input', () => {
+    it('should repond to event change', () => {
+        const wrapper = shallow(<Login/>);
+        wrapper.find('#username').simulate('change', {target: {name: 'username', value: 'admin'}});
+        expect(wrapper.state('username')).toEqual('admin')
+    })
+})

@@ -37,17 +37,21 @@ export default class Login extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const admin = {
-            username: this.state.username,
-            password: this.state.password
-        }
-
-        loginAdmin(admin).then(res => {
-            const auth = isAuthenticated();
-            if (auth) {
-                this.props.history.push('/dashboard');
+        if (this.state.username !== '' || this.state.password !== '') {
+            const admin = {
+                username: this.state.username,
+                password: this.state.password
             }
-        })
+    
+            loginAdmin(admin).then(res => {
+                const auth = isAuthenticated();
+                if (auth) {
+                    this.props.history.push('/dashboard');
+                }
+            })
+        } else {
+            alert('Fields are empty!')
+        }
 
     }
 

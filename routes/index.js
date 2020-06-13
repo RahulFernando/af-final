@@ -198,9 +198,20 @@ router.get('/hotel', (req, res) => {
 })
 
 router.delete('/hotel/:id', (req, res) => {
-    Hotel.deleteHotel(req.params.id, err => {
-        if (!err) {
-            return res.json({message: "Deleted!"})
+    Location.find({
+        hotel: req.params.id
+    }, function(err, match) {
+        if (match.length > 0 ) {
+            console.log(match)
+            return res.json({
+                message: 'You have added this hotel to a location'
+            })
+        } else {
+            Hotel.deleteHotel(req.params.id, err => {
+                if (!err) {
+                    return res.json({message: "Deleted!"})
+                }
+            })
         }
     })
 })
